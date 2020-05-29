@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style type="text/css">
+		h1:hover {
+		    font-family: Pompadur2;
+	   	} 
+		@font-face {
+		    font-family: Pompadur; /* Гарнитура шрифта */
+		    src: url(Augusta.ttf); /* Путь к файлу со шрифтом */
+	   	}
+	   	@font-face {
+		    font-family: Pompadur; /* Гарнитура шрифта */
+		    src: url(Augusta.ttf); /* Путь к файлу со шрифтом */
+	   	}
+	   	@font-face {
+		    font-family: Pompadur2; /* Гарнитура шрифта */
+		    src: url(Augusta-shadow.ttf); /* Путь к файлу со шрифтом */
+	   	}
+		.body{
+			background-size: 100%;
+		}
+		.text{
+			position: absolute;
+			color: white;
+			font-family: Pompadur;
+		}
+	</style>
+</head>
+<body class="body">
+	<div class="menu">
+		<h1 class="play text" style="left: 900px; top: 500px;">Play</h1>
+		<audio class="music" src="musicV1.mp3" autoplay="autoplay"></audio>
+	</div>
+	<div class="game">
+		
+	</div>
+	<div class="boss">
+		<h1 class="text bosstext" style="transition: 3s;position: absolute; left: 780px; top: 400px; color: red; opacity: 1; font-size: 70px">BOSS FIGHT</h1>
+		<h1 class="text" style="position: absolute; color: white; left: 50px ; top: 800px;">Vicar Amelia</h1>
+		<div class="vicarhp" style="position: absolute; height: 20px; background-color: red; left: 360px; top: 815px;"></div>
+	</div>
+	<div class="dream">
+
+	</div>
+
+	<script type="text/javascript">
+		let body = document.querySelector(".body")
+		let dream = document.querySelector(".dream")
+		let music = document.querySelector(".music")
+		let menu = document.querySelector(".menu")
+		let game = document.querySelector(".game")
+		let boss = document.querySelector(".boss")
+		let play = document.querySelector(".play")
+		let vicar = document.querySelector(".vicar")
+		let vicarhp = document.querySelector(".vicarhp")
+		let bosstext = document.querySelector(".bosstext")
+		let images = ["witch.png","logarius.png","beast.webp","mimic.png","shadows.png"]
+		let red = 0
+		dream.style.display = "none"
+		boss.style.display = "none"
+		game.style.display = "none"
+		body.style.backgroundImage = "url(bg1.jpg)"
+		let getRandom = function(arg){
+		let rand = Math.random() * arg
+       	let round = Math.round(rand)
+       	return round}
+       	let getRandomImg = function(){
+		let rand = Math.random() * 4
+       	let round = Math.round(rand)
+       	return round}
+		play.onclick = function(){
+			menu.style.display = "none"
+			game.style.display = "block"
+			body.style.backgroundImage = "url(bg2.png)"
+			stopInterval = function(){
+				clearInterval(Interval)
+			}
+       		callimg = function(){
+				let img = document.createElement("img")
+				img.style.width = "150px"
+				img.style.height = "150px"
+				img.style.position = "absolute"
+				img.src = images[getRandomImg()]
+				img.style.left = getRandom(1700) + "px"
+				img.style.top = getRandom(800) + "px"
+				document.body.appendChild(img)
+				img.onclick = function(){
+					red = red + 1
+					img.style.display = "none"
+				}
+			}
+			let check = function(){
+				stopInterval()
+				if(red > 10){
+					alert("ты выиграл")
+					music.src = "musicV2.mp3"
+					game.style.display = "none"
+					boss.style.display = "block"
+					body.style.backgroundImage = "url(bg3.jpg)"
+					bosstext.onclick = function(){
+						let n = 1300
+						vicarhp.style.width = n + "px"
+						bosstext.style.opacity = 0
+						let img = document.createElement("img")
+						document.body.appendChild(img)
+						img.style.width = "700px"
+						img.style.height = "700px"
+						img.style.position = "absolute"
+						img.src = "vicar3.png"
+						img.style.left = "600px"
+						img.style.top = "100px"
+						img.onclick = function(){
+							n = n - 20
+							vicarhp.style.width = n + "px"
+							if(n <= 0){
+								body.style.backgroundImage = "url(bg4.jpg)"
+								dream.style.display = "block"
+								img.style.display = "none"
+								boss.style.display = "none"
+								music.src = "dream.mp3"
+								alert("ты выиграл")
+								alert("После победы над чудовищем, вы перемещаетесь в сон охотника, где кукла несет вас в инвалидной коляске. После всего этого вы занимаете место старого охотника Германа и его звание Первого охотника. И теперь вы будете ждать появления других охотников, которые только начинают свой путь, чтобы наставлять их.")
+							}
+						}
+					}
+				}
+				if(red <= 10 ){
+					music.src = "Death.mp3"
+					alert("ты проиграл")
+					body.style.backgroundImage = "url(death.jpg)"
+					menu.style.display = "none"
+					game.style.display = "none"
+				}
+			}
+			let Interval = setInterval(callimg, 1000);
+			setTimeout(check, 12000)
+		}
+
+	</script>
+</body>
+</html>
